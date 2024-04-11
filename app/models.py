@@ -4,14 +4,16 @@ from django.contrib.auth.models import User
 
 
 class CameraGroup(models.Model):
+    """Groups for cameras"""
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
 
 class Camera(models.Model):
+    """Camera Data Model"""
     name = models.CharField(max_length=100)
     location = models.TextField()
     group = models.ForeignKey(
@@ -19,7 +21,7 @@ class Camera(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
     def save(self, *args, **kwargs):
         is_new = self._state.adding
@@ -29,6 +31,7 @@ class Camera(models.Model):
 
 
 class CameraStatusLog(models.Model):
+    "Camera Status Log"
     WORKING = "WRK"
     OFFLINE = "OFF"
     INCORRECT_POSITION = "INC"
@@ -57,3 +60,7 @@ class CameraStatusLog(models.Model):
             return None
         duration = end_time - self.start_date
         return duration
+
+    def get_status_display(self):
+        """Define status display"""
+        return " -- TODO "

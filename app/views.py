@@ -8,15 +8,18 @@ from .serializers import (
 
 
 class CameraViewSet(viewsets.ModelViewSet):
+    """Camera viewset"""
     queryset = Camera.objects.all()
     serializer_class = CameraSerializer
 
 
 class CameraGroupViewSet(viewsets.ModelViewSet):
+    """Camera group viewset"""
     queryset = CameraGroup.objects.all()
     serializer_class = CameraGroupSerializer
 
 
 class CameraStatusLogViewSet(viewsets.ModelViewSet):
+    """Camera status log viewset"""
     queryset = CameraStatusLog.objects.all()
     serializer_class = CameraStatusLogSerializer
