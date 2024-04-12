@@ -38,3 +38,14 @@ class CameraStatusLogSerializer(serializers.ModelSerializer):
         """Camera status log serializer meta data"""
         model = CameraStatusLog
         fields = ["id", "camera", "status", "start_date", "end_date", "user"]
+
+
+class CameraMatrixSerializer(serializers.ModelSerializer):
+    """Camera status log data"""
+    camera = CameraSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        """Camera status log serializer meta data"""
+        model = CameraStatusLog
+        fields = ["id", "camera", "status", "start_date", "end_date", "user"]

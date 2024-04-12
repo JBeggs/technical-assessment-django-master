@@ -1,9 +1,16 @@
 from rest_framework import viewsets
-from .models import Camera, CameraGroup, CameraStatusLog
+from rest_framework.generics import UpdateAPIView
+from rest_framework.permissions import IsAuthenticated
+from .models import (
+    Camera, 
+    CameraGroup, 
+    CameraStatusLog,
+)
 from .serializers import (
     CameraSerializer,
     CameraGroupSerializer,
     CameraStatusLogSerializer,
+    CameraMatrixSerializer,
 )
 
 
@@ -23,3 +30,19 @@ class CameraStatusLogViewSet(viewsets.ModelViewSet):
     """Camera status log viewset"""
     queryset = CameraStatusLog.objects.all()
     serializer_class = CameraStatusLogSerializer
+
+
+class CameraStatusUpdateViewSet(UpdateAPIView):
+    """Camera status log update viewset"""
+    queryset = CameraStatusLog.objects.all()
+    serializer_class = CameraStatusLogSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class CameraMatrixViewSet(viewsets.ModelViewSet):
+    """Camera matrix viewset"""
+    queryset = Camera.objects.all()
+    serializer_class = CameraMatrixSerializer
+    
+    def list(self, request, *args, **kwargs):
+        print(request.data['result'])
