@@ -12,6 +12,7 @@ class CameraGroupAdmin(admin.ModelAdmin):
 
 class CameraStatusLogAdmin(admin.ModelAdmin):
     """Admin for Camera"""
+    list_display = ("camera", "status", "start_date", "end_date", "duration", "user")
 
 
 admin.site.register(Camera, CameraAdmin)

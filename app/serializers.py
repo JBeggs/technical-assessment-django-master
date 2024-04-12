@@ -42,13 +42,13 @@ class CameraStatusLogSerializer(serializers.ModelSerializer):
 
 class CameraStatusUpdateSerializer(serializers.ModelSerializer):
     """Camera status log data"""
-    camera = CameraSerializer()
-    user = UserSerializer()
+    camera = CameraSerializer(required=False)
+    user = UserSerializer(required=False)
 
     class Meta:
         """Camera status log serializer meta data"""
         model = CameraStatusLog
-        fields = ["id", "camera", "status", "start_date", "end_date", "user"]
+        fields = ["camera", "status", "start_date", "end_date", "user"]
 
 
 class CameraMatrixSerializer(serializers.ModelSerializer):
@@ -59,4 +59,4 @@ class CameraMatrixSerializer(serializers.ModelSerializer):
     class Meta:
         """Camera status log serializer meta data"""
         model = CameraStatusLog
-        fields = ["id", "camera", "status", "start_date", "end_date", "user"]
+        fields = ["id", "camera", "status", "start_date", "end_date", "duration", "__str__", "user"]

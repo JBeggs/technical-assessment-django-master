@@ -46,7 +46,7 @@ class CameraStatusLog(models.Model):
         "Camera", on_delete=models.CASCADE, related_name="status_logs"
     )
     status = models.CharField(max_length=3, choices=StatusChoices)
-    start_date = models.DateTimeField(null=True, blank=True)
+    start_date = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
@@ -56,11 +56,16 @@ class CameraStatusLog(models.Model):
     def duration(self):
         """Calculate the duration the camera has been in the current status."""
         end_time = self.end_date if self.end_date else timezone.now()
-        if not self.start_date:
+        if not self.start_date or not self.end_date:
             return None
-        duration = end_time - self.start_date
+        duration = str(end_time - self.start_date)
         return duration
 
     def get_status_display(self):
         """Define status display"""
-        return " -- TODO "
+        duration = ""
+        
+        if self.status == "WRK":
+            duration = f" for {self.duration}"
+
+        return f" is {self.StatusChoices(self.status)} {duration}"
