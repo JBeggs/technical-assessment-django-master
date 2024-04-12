@@ -60,7 +60,7 @@ class CameraStatusUpdateViewSet(viewsets.ModelViewSet):
                 previous_log.save()
 
             if previous_log.status == _status:
-                return Response(data={"error": "cannot update status, no change"}, status=status.HTTP_201_CREATED)
+                return Response(data={"error": "cannot update status, no change"}, status=status.HTTP_400_BAD_REQUEST)
 
             serializer.is_valid(raise_exception=True)
             serializer.save(camera=camera, user=request.user)
