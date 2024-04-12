@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
 
-from app.models import Camera, CameraStatusLog
+from app.models import CameraGroup, Camera, CameraStatusLog
 
 
 class ViewsetAuthenticationTest(APITestCase):
@@ -85,7 +85,8 @@ class ViewsetAuthenticationTest(APITestCase):
         
     def test_camera_status_log_update_viewset(self):
         """Test camera status log update"""
-        camera = G(Camera, name="Test")
+        group = G(CameraGroup, name="Test Group")
+        camera = G(Camera, name="Test", group=group)
         G(CameraStatusLog, camera=camera)
         url = reverse("camera-update")
 
@@ -104,7 +105,8 @@ class ViewsetAuthenticationTest(APITestCase):
         
     def test_camera_log_matrix_viewset(self):
         """Test camera log matrix"""
-        camera = G(Camera, name="Test")
+        group = G(CameraGroup, name="Test Group")
+        camera = G(Camera, name="Test", group=group)
         G(CameraStatusLog, camera=camera)
         url = reverse("camera-log-update")
 
