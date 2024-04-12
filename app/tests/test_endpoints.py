@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django_dynamic_fixture import G
+
 from rest_framework.test import APITestCase
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -77,7 +78,7 @@ class ViewsetAuthenticationTest(APITestCase):
     def test_camera_status_update_viewset_authentication_required(self):
         """Test camera status log update authentication required"""
         unauthorized_clinet = APIClient()
-        url = reverse("camera-status-update")
+        url = reverse("camera-status-update-list")
 
         response = unauthorized_clinet.get(url)
 
@@ -88,11 +89,13 @@ class ViewsetAuthenticationTest(APITestCase):
         group = G(CameraGroup, name="Test Group")
         camera = G(Camera, name="Test", group=group)
         G(CameraStatusLog, camera=camera)
-        url = reverse("camera-status-update")
+        url = reverse("camera-status-update-list")
 
-        response = self.client.post(url, data={})
+        response = self.client.post(url, data={"camera_id": "1", "status":"OFF"})
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["camera"]["id"], 1)
+        self.assertEqual(response.data["status"], "OFF")
 
     def test_camera_matrix_viewset_authentication_required(self):
         """Test camera log matrix authentication required"""

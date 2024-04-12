@@ -1,6 +1,8 @@
+from datetime import timedelta
+
 from django.test import TestCase
 from django.utils import timezone
-from datetime import timedelta
+
 from django_dynamic_fixture import G
 from ..models import Camera, CameraStatusLog
 
@@ -24,8 +26,9 @@ class CameraStatusLogModelTest(TestCase):
         """Test Duration with End Date"""
         start_date = timezone.now() - timedelta(days=2)
         end_date = timezone.now() - timedelta(days=1)
+        
         camera_log = G(CameraStatusLog, start_date=start_date, end_date=end_date)
 
         expected_duration = end_date - start_date
 
-        self.assertEqual(camera_log.duration(), expected_duration)
+        self.assertEqual(camera_log.duration(), str(expected_duration))
