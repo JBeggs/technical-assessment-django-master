@@ -92,3 +92,22 @@ class ViewsetAuthenticationTest(APITestCase):
         response = self.client.post(url, data={})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_camera_log_matrix_viewset_authentication_required(self):
+        """Test camera log matrix authentication required"""
+        unauthorized_clinet = APIClient()
+        url = reverse("camera-log-matrix")
+
+        response = unauthorized_clinet.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        
+    def test_camera_log_matrix_viewset(self):
+        """Test camera log matrix"""
+        camera = G(Camera, name="Test")
+        G(CameraStatusLog, camera=camera)
+        url = reverse("camera-log-update")
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
