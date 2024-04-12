@@ -74,41 +74,41 @@ class ViewsetAuthenticationTest(APITestCase):
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]["name"], "Test")
 
-    def test_camera_status_log_update_viewset_authentication_required(self):
+    def test_camera_status_update_viewset_authentication_required(self):
         """Test camera status log update authentication required"""
         unauthorized_clinet = APIClient()
-        url = reverse("camerastatuslog-update")
+        url = reverse("camera-status-update")
 
         response = unauthorized_clinet.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         
-    def test_camera_status_log_update_viewset(self):
+    def test_camera_status_update_viewset(self):
         """Test camera status log update"""
         group = G(CameraGroup, name="Test Group")
         camera = G(Camera, name="Test", group=group)
         G(CameraStatusLog, camera=camera)
-        url = reverse("camera-update")
+        url = reverse("camera-status-update")
 
         response = self.client.post(url, data={})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_camera_log_matrix_viewset_authentication_required(self):
+    def test_camera_matrix_viewset_authentication_required(self):
         """Test camera log matrix authentication required"""
         unauthorized_clinet = APIClient()
-        url = reverse("camera-log-matrix")
+        url = reverse("camera-matrix-list")
 
         response = unauthorized_clinet.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         
-    def test_camera_log_matrix_viewset(self):
+    def test_camera_matrix_viewset(self):
         """Test camera log matrix"""
         group = G(CameraGroup, name="Test Group")
         camera = G(Camera, name="Test", group=group)
         G(CameraStatusLog, camera=camera)
-        url = reverse("camera-log-update")
+        url = reverse("camera-matrix-list")
 
         response = self.client.get(url)
 
