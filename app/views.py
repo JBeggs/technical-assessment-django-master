@@ -35,7 +35,7 @@ class CameraStatusLogViewSet(viewsets.ModelViewSet):
     queryset = CameraStatusLog.objects.all()
     serializer_class = CameraStatusLogSerializer
 
-
+# This endpoint only needs camera_id and status
 class CameraStatusUpdateViewSet(viewsets.ModelViewSet):
     """Camera status log update viewset"""
     queryset = CameraStatusLog.objects.all()
