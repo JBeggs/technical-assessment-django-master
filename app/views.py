@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from rest_framework.generics import UpdateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from rest_framework.response import Response
 from .models import (
     Camera, 
     CameraGroup, 
@@ -32,11 +32,25 @@ class CameraStatusLogViewSet(viewsets.ModelViewSet):
     serializer_class = CameraStatusLogSerializer
 
 
-class CameraStatusUpdateViewSet(UpdateAPIView):
+class CameraStatusUpdateViewSet(viewsets.ModelViewSet):
     """Camera status log update viewset"""
     queryset = CameraStatusLog.objects.all()
     serializer_class = CameraStatusLogSerializer
-    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        
+        camera_id = request.data.get('camera_id')
+        camera = Camera.objects.get(id=camera_id)
+
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.is_valid(raise_exception=True)
+            serializer.save(camera=camera, user=request.user)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class CameraMatrixViewSet(viewsets.ModelViewSet):
